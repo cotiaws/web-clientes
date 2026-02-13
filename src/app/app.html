@@ -3,10 +3,16 @@
 
     <div class="card card-body m-1 p-3 shadow">
 
-      <h3>Cadastro de clientes</h3>
+      @if (cliente() == null) {
+          <h3>Cadastro de clientes</h3>
+      }
+      @else {
+          <h3>Edição de cliente</h3>
+      }     
+
       <p>Preencha os campos do formulário.</p>
 
-      <form [formGroup]="formCadastro" (ngSubmit)="cadastrar()">
+      <form [formGroup]="formCadastroEdicao" (ngSubmit)="salvar()">
         <div class="mb-3">
           <label>Informe o nome:</label>
           <input
@@ -38,7 +44,14 @@
         </div>
 
         <div class="mb-3">
-          <input type="submit" class="btn btn-primary shadow" value="Realizar cadastro" />
+          
+          @if (cliente() == null) {
+              <input type="submit" class="btn btn-primary shadow" value="Realizar cadastro" />
+          }
+          @else {
+              <input type="submit" class="btn btn-primary shadow" value="Atualizar dados" />
+          }          
+
         </div>
       </form>
     </div>
@@ -85,8 +98,12 @@
               <td>{{ c.telefone }}</td>
               <td>{{ c.dataCadastro | date : 'dd/MM/yyyy HH:mm' }}</td>
               <td>
-                <button class="btn btn-sm btn-primary me-1">Editar</button>
-                <button class="btn btn-sm btn-danger">Excluir</button>
+                <button class="btn btn-sm btn-primary me-1" (click)="editar(c)">
+                  Editar
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="excluir(c.id)">
+                  Excluir
+                </button>
               </td>
             </tr>
           }
